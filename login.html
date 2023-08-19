@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Form Design</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <!-- <div class="profile"> -->
+        <img class="img" src="yas.jpg" alt="Profile-photo">
+    <!-- </div> -->
+    <div class="box">
+        
+        <h1>Login Here</h1>
+        <form name="myform" method="POST" onsubmit="return vfun()">
+            <p>Username</p>
+            <input type="text" required="" name="uname" placeholder="Enter Username">
+
+            <p>Password</p>
+            <input type="password" required="" name="upswd" placeholder="Enter Password">
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <script>
+        function vfun() {
+            var uname = document.forms["myform"]["uname"].value;
+            var upswd = document.forms["myform"]["upswd"].value;
+
+            if (uname === "yaswanth" && upswd === "yas") {
+                alert("Login successful");
+                const newPageURL = "index.html";
+                window.location.href = newPageURL;  
+                return false; // Prevent form submission (optional, you can remove this line if you want to submit the form)
+            } else {
+                alert("Check the entered credentials");
+                return false; // Prevent form submission (optional, you can remove this line if you want to submit the form)
+            }
+        }
+    </script>
+</body>
+</html>

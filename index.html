@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 25px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="datetime-local"],
+    input[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      margin-top: 10px;
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+    
+    }
+
+    input[type="submit"]:hover {
+      background-color: #555;
+    }
+
+.nav{
+  background-color: #333;
+  
+}
+.but{
+  position: relative;
+  margin-left: 1450px;
+  margin-top: 10px;
+  padding: 10px 20px;
+}
+
+  </style>
+
+  
+  <div class="nav">
+    <button class="but" onclick="logout()">Logout</button>
+    <h1>To-Do List</h1>
+  </div>
+
+  <form action="" method="post" id="todoForm">
+    <label for="task">Task to be reminded:</label>
+    <input type="text" id="task" name="task" class="task" required>
+    <br>
+    <label for="dueDate">Due Date:</label>
+    <input type="datetime-local" id="dueDate" class="dueDate" name="dueDate" required>
+
+    <input type="submit" value="Add task">
+  </form>
+
+  <div id="tasksContainer">
+    <!-- The tasks will be displayed here -->
+  </div>        <script>
+    // Define the sound URL
+    const alertSoundUrl = "alarm.wav"; // Replace with the actual path to your sound file
+
+    document.getElementById("todoForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        // Get the task and dueDate values from the form
+        const task = document.getElementById("task").value;
+        const dueDate = new Date(document.getElementById("dueDate").value).getTime();
+
+        // Create a new task element with checkboxes and delete button
+        const taskElement = document.createElement("div");
+        taskElement.className = "task-item";
+        taskElement.innerHTML = `<style>.task-item{background:grey;margin-top:20px;}</style><body>
+            <input type="checkbox" class="task-checkbox">
+            <span>${task} - ${new Date(dueDate).toLocaleString()}</span>
+            <button class="delete-btn">Delete</button></body>
+            
+        `;
+
+        // Add the task element to the tasksContainer
+        const tasksContainer = document.getElementById("tasksContainer");
+        tasksContainer.appendChild(taskElement);
+
+        // Clear the form fields after adding the task
+        document.getElementById("task").value = "";
+        document.getElementById("dueDate").value = "";
+
+        // Attach a click event listener to the delete button
+        const deleteBtn = taskElement.querySelector(".delete-btn");
+        deleteBtn.addEventListener("click", function() {
+            tasksContainer.removeChild(taskElement);
+        });
+
+        // Attach a change event listener to the checkbox
+        const taskCheckbox = taskElement.querySelector(".task-checkbox");
+        taskCheckbox.addEventListener("change", function() {
+            if (this.checked) {
+                taskElement.style.textDecoration = "line-through";
+            } else {
+                taskElement.style.textDecoration = "none";
+            }
+        });
+
+        // Schedule the alert and play the sound when the due date arises
+        const currentTime = new Date().getTime();
+        const timeDifference = dueDate - currentTime;
+
+        if (timeDifference > 0) {
+            setTimeout(function() {
+                // Play the alert sound
+                const alertSound = new Audio(alertSoundUrl);
+                alertSound.play();
+
+                // Show the alert message
+                // window.alert(`Task "${task}" is due now!`);
+                confirm(`Task "${task}" is due now!`)
+            }, timeDifference);
+        } else {
+            // Show an error message if the due date is in the past
+            window.alert("The due date should be in the future.");
+        }
+    });
+
+    function logout() {
+        // Replace 'your_php_page.php' with the actual filename and path of your PHP page
+        window.location.href = "login.html";
+    }
+</script>
+</body>
+</html>
